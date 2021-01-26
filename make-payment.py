@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ##
-# Simulates potential write skew conflicts that can occur for MongoDB, as with any other database
-# which provides 'snapshot isolation'.
+# Simulates potential write skew anomalies that can occur with MongoDB, as with any other database
+# which provides 'snapshot isolation'. Also shows how such anomalies can be avoided.
 ##
 import argparse
 import time
