@@ -1,0 +1,6 @@
+account_holder.string(),account_type.string(),balance.decimal()
+"Alice","CURRENT",-75
+"Alice","SAVINGS",150
+"Bob","CURRENT",300
+"Bob","SAVINGS",2000
+
