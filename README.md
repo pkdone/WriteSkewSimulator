@@ -41,16 +41,16 @@ exit
 3. In terminal 1, launch the project's Python application with an argument flag `CURRENT` specified to indicate that a payment of 50 should be made, debiting Alice's __current account__ and crediting Bob's current account. For example (change the URL first):
 
 ```bash
-/make-payment.py -u 'mongodb://localhost:27017,localhost:27027,localhost:27037/?replicaSet=TestRS' -a CURRENT
+./make-payment.py -u 'mongodb://localhost:27017,localhost:27027,localhost:27037/?replicaSet=TestRS' -a CURRENT
 ```
 
 4. Very quickly (__within 10 seconds of executing the previous step__), in terminal 2, launch the project's Python application but this time with the flag `SAVINGS` to indicate that a payment of 50 should be made, debiting Alice's __savings account__ and crediting Bob's savings account. For example (change the URL first):
 
 ```bash
-/make-payment.py -u 'mongodb://localhost:27017,localhost:27027,localhost:27037/?replicaSet=TestRS' -a SAVINGS
+./make-payment.py -u 'mongodb://localhost:27017,localhost:27027,localhost:27037/?replicaSet=TestRS' -a SAVINGS
 ```
 
-__EXPECTED RESULT__: Even though both transactions perform a check of Alice's net balance across her current and saving account to see if it is equal or greater than 50 to cover the 50 payment she is making, due to the write skew anomaly (the balance check queries not being causally tied into to the subsequent bank account updates), a problem occurs, After both transactions complete, Alice is unintentionally left overdrawn. The output of running both transactions should be similar to the screenshot shown below, showing the overdrawn error message:
+__EXPECTED RESULT__: Even though both transactions perform a check of Alice's net balance across her current and saving account to see if it is equal or greater than 50 to cover the 50 payment she is making, due to the write skew anomaly (the balance check queries not being causally tied into to the subsequent bank account updates), a problem occurs. After both transactions complete, Alice is unintentionally left overdrawn. The output of running both transactions should be similar to the screenshot shown below, showing the overdrawn error message:
 
  ![Bad Result](img/badresult.png)
 

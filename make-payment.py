@@ -95,8 +95,7 @@ def make_payment(url, payment, account_type, do_conflict_check):
     except Exception as e:
         print(f" - Conflict detected as expected, to prevent a payment of '{payment}' from causing "
               f"Alice to go overdrawn. Exception details: {e}")
-        pass
-
+        
     aliceBalance = getAliceCurrentBalance(None, acc_coll, False)
 
     if aliceBalance < Decimal(0):
