@@ -56,7 +56,7 @@ def make_payment(url, payment, account_type, do_conflict_check):
         with client.start_session() as tx_sess:
             with tx_sess.start_transaction(read_concern=ReadConcern(level='snapshot'),
                                            write_concern=WriteConcern('majority')):
-                # READ BALANCES FOR ALICE'S CURRENT & SAVING ACCOUNTS AND TOTAL THEM UP                           
+                # READ BALANCES FOR ALICE'S CURRENT & SAVING ACCOUNTS AND TOTAL THEM UP
                 aliceBalance = getAliceCurrentBalance(tx_sess, acc_coll, do_conflict_check)
 
                 # STOP PROCESSING THE PAYMENT ALICE DOES NOT HAVE ENOUGH FUNDS
@@ -67,12 +67,12 @@ def make_payment(url, payment, account_type, do_conflict_check):
 
                 print(f" - Proceeding with payment of '{payment}' because Alice's bank balance is: "
                       f"'{aliceBalance}'")
-                      
+
                 # ARTIFICIAL PAUSE TO ENABLE THE RACE CONDITION OF TWO TRANSACTIONS TO OCCUR
                 print(f" - Started sleeping for {SLEEP_SECS} seconds")
                 time.sleep(SLEEP_SECS)
                 print(f" - Finished sleeping")
-                
+
                 # PERFORM THE PAYMENT TRANSFER FROM ONE OF ALICE'S ACCOUNT TO ONE OF BOB'S ACCOUNTS
                 acc_coll.update_one(
                     {
