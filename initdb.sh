@@ -5,9 +5,9 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+DB_URL="$1"
 DB_NAME="bank"
 ACC_COLL_NAME="accounts"
-DB_URL="$1"
 printf "\nUsing MongoDB DB URL: ${DB_URL}\n"
 
 printf "\nStarted: Initialising DB\n"

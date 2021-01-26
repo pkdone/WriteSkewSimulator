@@ -13,14 +13,14 @@ One instance of the application will be run to attempt to move an amount of 50 f
 The demonstration first shows how, with a naive approach, Alice can be allowed to inadvertently become overdrawn when both payments are simultaneously attempted, even though [multi-record ACID transactions](https://docs.mongodb.com/manual/core/transactions/) are being employed. An artificial pause of 10 seconds is introduced between the read operations and the update operations of each application's transaction, to enable the potential race condition to be more easily and reliably reproduced. It is then shown how this overdraft possibility can be avoided by incorporating further logic in the application to allow the conflict to be detected and hence prevent the write skew from occurring. This is achieved in the part of the code which originally reads the balances of each of Alice's accounts, to instead perform a simultaneous read + _dummy_ update of each account being queried (by using `find_one_and_update()` & `$set`in the application's code). This effectively ties the causal dependency of the later update operations to the initial read operations, together in the same transaction snapshot, thus allowing any conflict between two competing transaction's '_reads_' to be automatically detected.
 
 
-# Prerequisites/Assumptions
+# Prerequisites
 
 * A [MongoDB Replica Set](https://docs.mongodb.com/manual/tutorial/deploy-replica-set/) is running and network accessible, using MongoDB version 4.4 or greater
 * Python version 3, the latest MongoDB Python Driver, `pymongo` and the Python DNS library, `dnspython` have all been installed locally
 * Two command line terminals/shells have been launched ready to run two different instances of the same Python application, with different arguments, to be used to simulate two concurrent transactions
 
 
-# Steps To Demonstrate The Write Skew Anomaly Occurring
+# Simulating The Write Skew Anomaly
 
 1. Run the provided bash script to initialise the database with 4 bank account records (a current account and a savings account, each for Alice and Bob. For example (change the URL first to match your the location of your MongoDB clustered database):
 
@@ -56,7 +56,8 @@ __EXPECTED RESULT__: Even though both transactions perform a check of Alice's ne
 
 &nbsp;Checking the state of the database account records using the Mongo Shell / Compass will also show that in totality, Alice is now overdrawn.
 
-# Steps To Show How The Write Skew Anomaly Can Be Protected Against
+
+# Avoiding The Write Skew Anomaly
 
 1. Re-run the database initialisation bash script to reset all the bank account data to the original state again. For example (change the URL first):
 
